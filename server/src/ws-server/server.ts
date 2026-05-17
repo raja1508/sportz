@@ -13,6 +13,7 @@ type ServerMessage =
   | { type: "SUBSCRIBED";          matchId: number; subscriberCount: number }
   | { type: "UNSUBSCRIBED";        matchId: number }
   | { type: "COMMENTARY_EVENT";    matchId: number; event: unknown }
+  | {type: "MATCH_CREATED";        match: unknown}
   | { type: "SCORE_UPDATE";        matchId: number; homeScore: number; awayScore: number }
   | { type: "MATCH_STATUS_CHANGE"; matchId: number; status: string }
   | { type: "PONG" }
@@ -52,6 +53,11 @@ function getRoom(matchId: number) {
     return rooms.get(matchId)
 }
 
+
+function getSubscriberCount(matchId: number): number {
+  return rooms.get(matchId)?.size ?? 0;
+}
+
 function subscribe(socket: WebSocket, matchId: number){
     const client = clients.get(socket)
     if(!client) return 
@@ -60,12 +66,13 @@ function subscribe(socket: WebSocket, matchId: number){
     if(client.subscribedMatchId !== null) {
         unsubscribe(socket, matchId, false)
     }
-    const room = getRoom(matchId); 
+    const room = getRoom(matchId);
     room?.add(socket); 
+    let subscriberCount = getSubscriberCount(matchId)
 
     client.subscribedMatchId = matchId
 
-    sendJson(socket, {type: "subscribed", data: client.subscribedMatchId})
+    sendJson(socket, {type: "subscribed".toUpperCase(), matchId: client.subscribedMatchId, subscriberCount})
 }
 
 
@@ -83,7 +90,7 @@ function unsubscribe(socket: WebSocket, matchId: number, notify=true){
 
 
     if(notify) {
-        sendJson(socket, {type: "unsubscribed", data: client})
+        sendJson(socket, {type: "unsubscribed".toUpperCase(), matchId})
     }
 }
 
@@ -154,7 +161,7 @@ export function attachWebsocketServer(server: Server) {
     })
 
     function broadcastMatchCreated(match: Match) {
-        broadcast(wss, {type: "MATCH_CREATED", data: match})
+        broadcast(wss, {type: "MATCH_CREATED", match})
     }
 
     function broadcastCommentaryEvent(matchId: number, event: unknown) {
@@ -187,10 +194,7 @@ export function attachWebsocketServer(server: Server) {
         });
       }
        
-      /** How many clients are watching a match right now */
-      function getSubscriberCount(matchId: number): number {
-        return rooms.get(matchId)?.size ?? 0;
-      }
+
 
     return {broadcastMatchCreated, broadcastCommentaryEvent, broadcastScoreUpdate, broadcastStatusChange}
 }

@@ -18,6 +18,9 @@ function getRoom(matchId) {
         rooms.set(matchId, new Set());
     return rooms.get(matchId);
 }
+function getSubscriberCount(matchId) {
+    return rooms.get(matchId)?.size ?? 0;
+}
 function subscribe(socket, matchId) {
     const client = clients.get(socket);
     if (!client)
@@ -27,8 +30,9 @@ function subscribe(socket, matchId) {
     }
     const room = getRoom(matchId);
     room?.add(socket);
+    let subscriberCount = getSubscriberCount(matchId);
     client.subscribedMatchId = matchId;
-    sendJson(socket, { type: "subscribed", data: client.subscribedMatchId });
+    sendJson(socket, { type: "subscribed".toUpperCase(), matchId: client.subscribedMatchId, subscriberCount });
 }
 function unsubscribe(socket, matchId, notify = true) {
     const client = clients.get(socket);
@@ -42,7 +46,7 @@ function unsubscribe(socket, matchId, notify = true) {
     }
     client.subscribedMatchId = null;
     if (notify) {
-        sendJson(socket, { type: "unsubscribed", data: client });
+        sendJson(socket, { type: "unsubscribed".toUpperCase(), matchId });
     }
 }
 function broadcastToMatch(matchId, payload) {
@@ -98,7 +102,7 @@ export function attachWebsocketServer(server) {
         socket.on("error", console.error);
     });
     function broadcastMatchCreated(match) {
-        broadcast(wss, { type: "MATCH_CREATED", data: match });
+        broadcast(wss, { type: "MATCH_CREATED", match });
     }
     function broadcastCommentaryEvent(matchId, event) {
         broadcastToMatch(matchId, {
@@ -121,10 +125,6 @@ export function attachWebsocketServer(server) {
             matchId,
             status,
         });
-    }
-    /** How many clients are watching a match right now */
-    function getSubscriberCount(matchId) {
-        return rooms.get(matchId)?.size ?? 0;
     }
     return { broadcastMatchCreated, broadcastCommentaryEvent, broadcastScoreUpdate, broadcastStatusChange };
 }

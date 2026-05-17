@@ -1,26 +1,16 @@
 "use client";
 
-// src/components/match/MatchCard.tsx
-// All styles are co-located at the bottom of this file
-// and injected via a <style> tag on first render.
-
 import { Match } from "@/types";
 import Badge from "@/components/ui/Badge";
 import LiveDot from "@/components/ui/LiveDot";
 import Button from "@/components/ui/Button";
 
-// ─────────────────────────────────────────────────
-// Types
-// ─────────────────────────────────────────────────
 interface MatchCardProps {
   match: Match;
   isSelected?: boolean;
   onSelect: (matchId: number | null) => void;
 }
 
-// ─────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────
 function formatTime(iso: string): string {
   return new Date(iso).toLocaleTimeString("en-US", {
     hour: "2-digit",
@@ -28,9 +18,6 @@ function formatTime(iso: string): string {
   });
 }
 
-// ─────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────
 export default function MatchCard({
   match,
   isSelected = true,
@@ -38,18 +25,16 @@ export default function MatchCard({
 }: MatchCardProps) {
   const isLive = match.status === "live";
 
-  function handleCardClick() {
+  // function handleCardClick() {
+  //   if (!isSelected) onSelect(match.id);
+  // }
+
+  function handleWatchLive() {
     if (!isSelected) onSelect(match.id);
   }
 
-  function handleWatchLive(e: React.MouseEvent) {
-    e.stopPropagation();
-    onSelect(match.id);
-  }
-
-  function handleClose(e: React.MouseEvent) {
-    e.stopPropagation();
-    onSelect(null);
+  function handleClose() {
+    if (isSelected) onSelect(null);
   }
 
   return (
@@ -60,11 +45,11 @@ export default function MatchCard({
       {/* ── Card root ── */}
       <div
         className={`mc-card ${isSelected ? "mc-card--selected" : ""}`}
-        onClick={handleCardClick}
-        role="button"
-        tabIndex={0}
-        aria-pressed={isSelected}
-        onKeyDown={(e) => e.key === "Enter" && handleCardClick()}
+        // onClick={handleCardClick}
+        // role="button"
+        // tabIndex={0}
+        // aria-pressed={isSelected}
+        // onKeyDown={(e) => e.key === "Enter" && handleCardClick()}
       >
         {/* Top row: badge + live status */}
         <div className="mc-top">
@@ -82,7 +67,7 @@ export default function MatchCard({
           {/* Home */}
           <div className="mc-team-row">
             <span className="mc-team-name">{match.homeTeam}</span>
-            <span className={`mc-score ${isSelected ? "mc-score--lit" : ""}`}>
+            <span className={`mc-score`}>
               {match.homeScore}
             </span>
           </div>
@@ -94,6 +79,7 @@ export default function MatchCard({
           </div>
         </div>
 
+        <div className="mt-8 border-t-1 border-gray-300"></div>
         {/* Footer: time + action buttons */}
         <div className="mc-footer">
           <span className="mc-time">{formatTime(match.startTime)}</span>
@@ -101,10 +87,10 @@ export default function MatchCard({
           {isSelected ? (
             <div className="mc-btn-group">
               <Button variant="watching">Watching Live</Button>
-              <Button variant="secondary" onClick={() => handleClose}>Close</Button>
+              <Button variant="secondary" onClick={() => handleClose()}>Close</Button>
             </div>
           ) : (
-            <Button variant="primary" onClick={() => handleWatchLive}>
+            <Button variant="primary" onClick={() => handleWatchLive()}>
               Watch Live
             </Button>
           )}
@@ -114,8 +100,7 @@ export default function MatchCard({
   );
 }
 
-// ─────────────────────────────────────────────────
-// Styles — co-located, scoped by .mc- prefix
+
 // box-shadow:
 //   1px 1px 0 #D1D5DB,
 //   2px 2px 0 #D1D5DB,

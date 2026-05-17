@@ -50,7 +50,7 @@ function EmptyState() {
 
 export default function CommentaryPanel({
   events = [],
-  connected = false,
+  connected = false
 }: CommentaryPanelProps) {
   const isEmpty = events.length === 0;
 
@@ -97,7 +97,11 @@ export default function CommentaryPanel({
   );
 }
 
-// ─── Styles ───────────────────────────────────────────────────────────────────
+// display: "flex",
+// flexDirection: "column",
+// height: "100%",        // fill parent
+// maxHeight: "100vh",    // safety cap
+// minHeight: "400px",
 
 const panelStyles: Record<string, React.CSSProperties> = {
   shell: {
@@ -108,6 +112,7 @@ const panelStyles: Record<string, React.CSSProperties> = {
     display: "flex",
     flexDirection: "column",
     height: "100%",
+    maxHeight: "100vh",
     minHeight: "400px",
     boxShadow :
   ` 1px 1px 0 #1F1F1F,
@@ -115,7 +120,7 @@ const panelStyles: Record<string, React.CSSProperties> = {
     3px 3px 0 #1F1F1F,
     4px 4px 0 #1F1F1F,
     3px 3px 0 #1F1F1F,
-    4px 4px 0 #1F1F1F;
+    4px 4px 0 #1F1F1F
     `
   },
   emptyShell: {
@@ -127,6 +132,8 @@ const panelStyles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     height: "100%",
     minHeight: "400px",
+    maxHeight: "100vh",
+
   },
   header: {
     display: "flex",

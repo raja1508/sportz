@@ -31,7 +31,7 @@ export type EventTag = "goal" | "shot" | "wicket" | "run" | "over" | string;
 // GET /matches → data: Match[]
 export interface Match {
   id: number;
-  sport: Sport;
+  sport: string;
   homeTeam: string;
   awayTeam: string;
   status: MatchStatus;
@@ -98,7 +98,11 @@ export type WsClientMessage =
   | { type: "UNSUBSCRIBE_MATCH"; matchId: number };
 
 export type WsServerMessage =
-  | { type: "SUBSCRIBED"; matchId: number }
-  | { type: "COMMENTARY_EVENT"; event: CommentaryEvent }
-  | { type: "SCORE_UPDATE"; matchId: number; homeScore: number; awayScore: number }
-  | { type: "MATCH_STATUS_CHANGE"; matchId: number; status: MatchStatus };
+  | { type: "SUBSCRIBED";          matchId: number; subscriberCount: number }
+  | { type: "UNSUBSCRIBED";        matchId: number }
+  | { type: "COMMENTARY_EVENT";    matchId: number; event: CommentaryEvent }
+  | { type: "SCORE_UPDATE";        matchId: number; homeScore: number; awayScore: number }
+  | { type: "MATCH_STATUS_CHANGE"; matchId: number; status: string }
+  | { type: "PONG" }
+  | { type: "ERROR";  message: string }
+  | { type: "MATCH_CREATED";  match: Match}

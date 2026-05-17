@@ -1,30 +1,14 @@
-// src/components/ui/Badge.tsx
-
-import { Sport } from "@/types";
-
 interface BadgeProps {
-  sport: Sport;
+  sport: string;
   className?: string;
 }
 
-// Each sport gets its own subtle color pair
-const sportStyles: Record<Sport, { bg: string; text: string; border: string }> = {
-  football:   { bg: "#F0FDF4", text: "#166534", border: "#BBF7D0" },
-  Cricket:    { bg: "#FFF7ED", text: "#9A3412", border: "#FED7AA" },
-  basketball: { bg: "#EFF6FF", text: "#1E40AF", border: "#BFDBFE" },
-  tennis:     { bg: "#FDF4FF", text: "#7E22CE", border: "#E9D5FF" },
-};
-
-// Clean display labels
-const sportLabels: Record<Sport, string> = {
-  football:   "Football",
-  Cricket:    "Cricket",
-  basketball: "Basketball",
-  tennis:     "Tennis",
-};
+function capitalizeFirstLetter(string: string) {
+  return string.charAt(0).toUpperCase() + string.slice(1).toLowerCase();
+}
 
 export default function Badge({ sport, className = "" }: BadgeProps) {
-  const style = sportStyles[sport];
+  const style =  { bg: "#EFF6FF", text: "#1E40AF", border: "#BFDBFE" };
 
   return (
     <span
@@ -35,7 +19,7 @@ export default function Badge({ sport, className = "" }: BadgeProps) {
         borderColor: style.border,
       }}
     >
-      {sportLabels[sport]}
+      {capitalizeFirstLetter(sport)}
     </span>
   );
 }

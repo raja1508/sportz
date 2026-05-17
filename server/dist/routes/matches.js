@@ -10,7 +10,7 @@ matchRouter.get("/", async (req, res) => {
         const data = await db.select()
             .from(matches)
             .orderBy(matches.startTime)
-            .limit(4);
+            .limit(8);
         return res.json({ msg: "Matches Fetched", matches: data });
     }
     catch (error) {

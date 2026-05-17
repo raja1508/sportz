@@ -7,18 +7,13 @@ import { Match } from "@/types";
 import { DUMMY_MATCHES } from "@/data/matches";
 import MatchCard from "@/components/match/MatchCard";
 
-// ─────────────────────────────────────────────────
-// Component
-// ─────────────────────────────────────────────────
-export default function MatchGrid() {
-  const [selectedId, setSelectedId] = useState<number | null>(null);
-  const matches: Match[] = DUMMY_MATCHES;
+interface MatchGridProps{
+  matches: Match[],
+  selectedId: number | null,
+  onSelect: (matchId: number | null) => void 
+} 
 
-  function handleSelect(matchId: number | null) {
-    // Clicking the same card's Close → deselect
-    // Clicking a new card → select it
-    setSelectedId(matchId);
-  }
+export default function MatchGrid({matches, selectedId, onSelect}: MatchGridProps) {
 
   return (
     <>
@@ -52,7 +47,7 @@ export default function MatchGrid() {
                 <MatchCard
                   match={match}
                   isSelected={selectedId === match.id}
-                  onSelect={handleSelect}
+                  onSelect={onSelect}
                 />
               </div>
             ))}
@@ -74,6 +69,8 @@ const GRID_STYLES = `
     flex-direction: column;
     gap: 16px;
     width: 100%;
+    height: 100%;
+
   }
 
   /* ── Header row ──────────────────────────────── */
@@ -126,6 +123,7 @@ const GRID_STYLES = `
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 14px;
+    max-height: 100vh - 80px
   }
 
   /* Single column on small screens */

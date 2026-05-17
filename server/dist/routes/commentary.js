@@ -38,7 +38,7 @@ commentaryRouter.post("/", async (req, res) => {
             return res.status(400).json({ msg: "Invalid Input Types", error: parsed.error });
         }
         const { matchId, minute, sequence, period, eventType, actor, team, message, metadata, tags } = parsed.data;
-        const newCommentary = await db.insert(commentary).values({
+        const [newCommentary] = await db.insert(commentary).values({
             matchId,
             minute,
             sequence,

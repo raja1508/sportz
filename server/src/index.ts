@@ -3,13 +3,14 @@ import matchRouter from "./routes/matches.js";
 import commentaryRouter from "./routes/commentary.js";
 import http from "http"
 import { attachWebsocketServer } from "./ws-server/server.js";
-
+import cors from "cors"
 
 const app = express();
 const PORT = 8000;
 
 
 app.use(express.json())
+app.use(cors())
 const server = http.createServer(app)
 
 
