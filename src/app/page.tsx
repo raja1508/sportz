@@ -20,7 +20,7 @@ export default function Home() {
 
 
   return (
-    <div className="h-full bg-[#FAFAFA] gap-10">
+    <div className="h-full bg-[#FAFAFA] gap-10 page">
       <main className="flex flex-col flex-1 gap-10 ">
         <Header></Header> 
 

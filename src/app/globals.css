@@ -110,6 +110,7 @@ html {
   scroll-behavior: smooth;
 }
  
+/* ✅ body — no padding, just base styles */
 body {
   font-family: var(--font-ui);
   background-color: #fafafa;
@@ -117,8 +118,37 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   line-height: 1.5;
-  padding: 20px 128px; 
-  
+}
+
+/* ── Page layout helpers ─────────────────────────── */
+
+/* Standard content page — use on most pages */
+.page {
+  padding: 24px 128px;
+}
+
+/* Admin panel — sidebar layout, no outer padding */
+.page-admin {
+  display: flex;
+  height: 100vh;
+  overflow: hidden;
+}
+
+/* Narrow centered — forms, auth pages */
+.page-centered {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 48px 24px;
+}
+
+/* Full bleed — landing, hero sections */
+.page-full {
+  padding: 0;
+}
+
+/* Responsive padding fallback */
+@media (max-width: 768px) {
+  .page { padding: 16px 20px; }
 }
  
 /* ─────────────────────────────────────────────────

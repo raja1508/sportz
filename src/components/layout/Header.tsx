@@ -32,7 +32,7 @@ const headerStyles: Record<string, React.CSSProperties> = {
         3px 3px 0 #1F1F1F,
         4px 4px 0 #1F1F1F,
         2px 2px 0 #1F1F1F,
-        3px 3px 0 #1F1F1F;
+        3px 3px 0 #1F1F1F
         `,
         padding:"0px 20px",
         justifyContent: "space-between",
@@ -52,7 +52,7 @@ const headerStyles: Record<string, React.CSSProperties> = {
         3px 3px 0 #1F1F1F,
         4px 4px 0 #1F1F1F,
         3px 3px 0 #1F1F1F,
-        4px 4px 0 #1F1F1F;
+        4px 4px 0 #1F1F1F
         `
     }
 }
